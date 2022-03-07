@@ -13,7 +13,7 @@ def remove_empty_directories(initial_dir,
 
     message = "removed"
     if dry_run:
-        message = "to be " + message
+        message = f"to be {message}"
 
     deleted = set()
 
@@ -28,7 +28,12 @@ def remove_empty_directories(initial_dir,
         if forbidden:
             continue
 
-        is_empty = len(files) < 1 and len(set([os.path.join(directory, s) for s in subdirs]) - deleted) < 1
+        is_empty = (
+            len(files) < 1
+            and len({os.path.join(directory, s) for s in subdirs} - deleted)
+            < 1
+        )
+
 
         if is_empty and (initial_dir != directory or allow_initial_delete):
             if not quiet:
